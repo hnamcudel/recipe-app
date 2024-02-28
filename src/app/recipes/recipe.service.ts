@@ -7,9 +7,7 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 export class RecipeService {
   recipeSelected = new EventEmitter<Recipe>();
 
-  constructor(private slServive: ShoppingListService) {
-    
-  }
+  constructor(private slServive: ShoppingListService) {}
 
   private recipes: Recipe[] = [
     new Recipe(
@@ -30,7 +28,11 @@ export class RecipeService {
     // not to change the original data
     return this.recipes.slice();
   }
-  
+
+  getRecipe(index: number) {
+    return this.recipes[index];
+  }
+
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.slServive.addIngredients(ingredients);
   }
