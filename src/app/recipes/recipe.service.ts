@@ -8,22 +8,29 @@ import { Subject } from 'rxjs';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
+  // private recipes: Recipe[] = [
+  //   new Recipe(
+  //     'Spaghetti',
+  //     'Very traditional spaghetti!',
+  //     'https://images.immediate.co.uk/production/volatile/sites/30/2022/09/Spicy-tomato-spaghetti-caf3053.jpg?resize=768,574',
+  //     [new Ingredient('Meat', 1), new Ingredient('French Fries', 20)]
+  //   ),
+  //   new Recipe(
+  //     'Spud',
+  //     'I dont even know this dish',
+  //     'https://www.collinsdictionary.com/images/full/spud_132427382.jpg',
+  //     [new Ingredient('Buns', 2), new Ingredient('Meat', 1)]
+  //   ),
+  // ];
+
+  private recipes: Recipe[] = [];
+
   constructor(private slServive: ShoppingListService) {}
 
-  private recipes: Recipe[] = [
-    new Recipe(
-      'Spaghetti',
-      'Very traditional spaghetti!',
-      'https://images.immediate.co.uk/production/volatile/sites/30/2022/09/Spicy-tomato-spaghetti-caf3053.jpg?resize=768,574',
-      [new Ingredient('Meat', 1), new Ingredient('French Fries', 20)]
-    ),
-    new Recipe(
-      'Spud',
-      'I dont even know this dish',
-      'https://www.collinsdictionary.com/images/full/spud_132427382.jpg',
-      [new Ingredient('Buns', 2), new Ingredient('Meat', 1)]
-    ),
-  ];
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     // not to change the original data
@@ -49,7 +56,7 @@ export class RecipeService {
   }
 
   deleteRecipe(index: number) {
-    this.recipes.splice(index,1);
-    this.recipesChanged.next(this.recipes.slice())
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
   }
 }
