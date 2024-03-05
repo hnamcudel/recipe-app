@@ -1,14 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class DataStorageService {
   constructor(
     private http: HttpClient,
-    private recipesService: RecipeService
+    private recipesService: RecipeService,
+    private authService: AuthService
   ) {}
 
   storeRecipes() {
@@ -24,9 +26,11 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
+    // User obs -> HTTP Obs using exhaustMap()
+
     return this.http
       .get<Recipe[]>(
-        'https://ng-course-recipe-book-ab9c4-default-rtdb.firebaseio.com/recipes.json'
+        'https://ng-course-recipe-book-ab9c4-default-rtdb.firebaseio.com/recipes.json',
       )
       .pipe(
         map((recipes) => {
